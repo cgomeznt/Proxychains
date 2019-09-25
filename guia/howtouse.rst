@@ -27,9 +27,13 @@ Abre el archivo de configuración.::
 
 	vi /etc/proxychains.conf
 	
-Al final del archivo, agregue su proxy como este::
+Al final del archivo en el tab ProxyList , agregue su proxy como este::
 
 	calcetines5 127.0.0.1 1080
+	http 183.111.169.207 3128
+	socks4 104.128.120.187 1080
+	https 75.66.83.12 80
+	http 91.221.61.126 3128
 
 socks5 es el tipo de proxy, puede agregar otros tipos, como http , https , socks4 , etc., según su situación. 127.0.0.1 es el host proxy y 1080 es el puerto en el que escucha el servidor proxy. Nuevamente, cámbielos a su situación específica.
 
@@ -57,17 +61,9 @@ Encuentra la siguiente línea::
 	
 Cambie su valor a algo como 8.8.8.8 . Luego guarde y cierre el archivo. En Arch Linux, no hay un archivo de configuración proxyresolv.
 
-Agregar los proxys
-++++++++++++++++++++++
-En el archivo de configuracion del proxychains "/etc/proxychains.conf" vamos al tab ProxyList y comentamos el #socks4 127.0.0.1 9050 y ahí agregamos todos los proxys que podamos tener::
 
-	http 183.111.169.207 3128
-	socks4 104.128.120.187 1080
-	https 75.66.83.12 80
-	http 91.221.61.126 3128
-
-DYNAMIC_CHAIN ​​VS RANDOM_CHAIN
-++++++++++++++++++++++++++++++
+dynamic_chain ​​VS random_chain y random_chain
++++++++++++++++++++++++++++++++++++++++++++++
 El encadenamiento dinámico nos permitirá ejecutar nuestro tráfico a través de cada proxy en nuestra lista, y si uno de los proxies está inactivo o no responde, se omiten los proxies muertos, irá automáticamente al siguiente proxy en la lista sin arrojar un error. Cada conexión se realizará a través de proxies encadenados. Todos los proxies se encadenarán en el orden en que aparecen en la lista. La activación del encadenamiento dinámico permite un mayor anonimato y una experiencia de piratería sin problemas. Para habilitar el encadenamiento dinámico, en el archivo de configuración, descomente la línea "dynamic_chains".::
 
 	dynamic_chain
@@ -89,13 +85,28 @@ Simplemente anteponga proxychains a cualquier comando que ejecute como el siguie
 
 Si está utilizando youtube-dl, entonces puede saber que no tiene soporte incorporado para proxy de calcetines, pero Proxychains redirigirá youtube-dl para que pase por el servidor proxy.
 
+otra prueba simple es::
+
+	$ proxychains curl cantv.com.ve
+	[proxychains] DLL init: proxychains-ng 4.11
+	[proxychains] Strict chain  ...  10.162.64.36:8080  ...  161.196.43.73:80  ...  OK
+	<head><body> This object may be found <a HREF="https://www.cantv.com.ve/">here</a> </body>
+
 Si desea redirigir todo el tráfico de su terminal a través del servidor proxy, ingrese iniciar un nuevo programa de shell con proxychains, como a continuación.::
 
 	proxychains bash
+
 	
 Este comando iniciará otro shell bash con proxychains en su terminal y de ahora en adelante no tendrá que anteponer proxychains a su comando. Su tráfico en este nuevo shell será redirigido automáticamente a través del servidor proxy.
 
 Nota: El  terminal es diferente del shell . Terminal es el dispositivo que le permite conectarse a una computadora host, mientras que Shell es una pieza de software en la computadora host. Shell es un intérprete de línea de comandos , que traduce su comando a ceros y unos para que la computadora pueda entender su comando. Cuando un terminal se conecta a una computadora host, se iniciará automáticamente un programa de shell para que los comandos del usuario puedan ser interpretados por el shell y la computadora pueda entender los comandos del usuario.
+Hacemos una prueba::
+
+	$ curl cantv.com.ve
+	[proxychains] DLL init: proxychains-ng 4.11
+	[proxychains] Strict chain  ...  10.162.64.36:8080  ...  161.196.43.73:80  ...  OK
+	<head><body> This object may be found <a HREF="https://www.cantv.com.ve/">here</a> </body>
+
 
 Modo silencioso
 +++++++++++++++++++++
