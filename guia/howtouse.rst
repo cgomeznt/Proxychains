@@ -29,7 +29,7 @@ Abre el archivo de configuración.::
 	
 Al final del archivo en el tab ProxyList , agregue su proxy como este::
 
-	calcetines5 127.0.0.1 1080
+	socks5 127.0.0.1 1080
 	http 183.111.169.207 3128
 	socks4 104.128.120.187 1080
 	https 75.66.83.12 80
@@ -83,7 +83,7 @@ Simplemente anteponga proxychains a cualquier comando que ejecute como el siguie
 
 	proxychains youtube-dl -citw https://www.youtube.com/channel/<channel-id>
 
-Si está utilizando youtube-dl, entonces puede saber que no tiene soporte incorporado para proxy de calcetines, pero Proxychains redirigirá youtube-dl para que pase por el servidor proxy.
+Si está utilizando youtube-dl, entonces puede saber que no tiene soporte incorporado para proxy de socks, pero Proxychains redirigirá youtube-dl para que pase por el servidor proxy.
 
 otra prueba simple es::
 
