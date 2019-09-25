@@ -27,7 +27,7 @@ Abre el archivo de configuración.::
 
 	vi /etc/proxychains.conf
 	
-Al final del archivo, agregue su proxy como este
+Al final del archivo, agregue su proxy como este::
 
 	calcetines5 127.0.0.1 1080
 
@@ -57,6 +57,30 @@ Encuentra la siguiente línea::
 	
 Cambie su valor a algo como 8.8.8.8 . Luego guarde y cierre el archivo. En Arch Linux, no hay un archivo de configuración proxyresolv.
 
+Agregar los proxys
+++++++++++++++++++++++
+En el archivo de configuracion del proxychains "/etc/proxychains.conf" vamos al tab ProxyList y comentamos el #socks4 127.0.0.1 9050 y ahí agregamos todos los proxys que podamos tener::
+
+	http 183.111.169.207 3128
+	socks4 104.128.120.187 1080
+	https 75.66.83.12 80
+	http 91.221.61.126 3128
+
+DYNAMIC_CHAIN ​​VS RANDOM_CHAIN
+++++++++++++++++++++++++++++++
+El encadenamiento dinámico nos permitirá ejecutar nuestro tráfico a través de cada proxy en nuestra lista, y si uno de los proxies está inactivo o no responde, se omiten los proxies muertos, irá automáticamente al siguiente proxy en la lista sin arrojar un error. Cada conexión se realizará a través de proxies encadenados. Todos los proxies se encadenarán en el orden en que aparecen en la lista. La activación del encadenamiento dinámico permite un mayor anonimato y una experiencia de piratería sin problemas. Para habilitar el encadenamiento dinámico, en el archivo de configuración, descomente la línea "dynamic_chains".::
+
+	dynamic_chain
+	strict_chain
+	random_chain
+	
+El encadenamiento aleatorio permitirá que las cadenas de proxy elijan al azar las direcciones IP de nuestra lista y cada vez que usemos cadenas de proxy, la cadena de proxy tendrá un aspecto diferente al objetivo, lo que dificultará el seguimiento de nuestro tráfico desde su fuente.
+
+Para activar el encadenamiento aleatorio, comente "cadenas dinámicas" y descomente "cadena aleatoria". Como solo podemos usar una de estas opciones a la vez, asegúrese de comentar las otras opciones en esta sección antes de usar proxychains.
+
+También puede descomentar la línea con "chain_len". Esta opción determinará cuántas de las direcciones IP de su cadena se utilizarán para crear su cadena de proxy aleatorio.
+
+
 Prueba
 +++++++++
 Simplemente anteponga proxychains a cualquier comando que ejecute como el siguiente.::
@@ -84,3 +108,16 @@ Encuentra la siguiente línea::
 	#Modo silencioso
 	
 Eliminar el hashtag. Guarde y cierre el archivo. Ahora solo verá el resultado de la aplicación que se está redirigiendo.
+
+Configurar un usuario y clave para que se valide en un proxy
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+Si el proxy requiere de un usuario y clave, lo podemos configurar en el archivo de configuracion del proxychains "/etc/proxychains.conf", y buscamos el tab ProxyList::
+
+	[ProxyList]
+	# add proxy here ...
+	# meanwile
+	# defaults set to "tor"
+	#socks4         127.0.0.1 9050
+	http 10.164.100.36 8080 e09048 ++Diciembre2017++
+
